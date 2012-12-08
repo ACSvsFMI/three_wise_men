@@ -139,7 +139,7 @@ if (isset($_GET['code'])) {
   foreach ($tasks['items'] as $item) {
       if(!isset($item['due'])) {
         $completed = $item['completed'] ? ' class="completed"' : '';
-        // echo "<li><a class='ticker' href='javascript:void(0);' data-id='{$item['id']}'>&#x2713;</a>{$item['title']}</li>"; 
+        echo "<li $completed><a class='ticker' href='javascript:void(0);' data-id='{$item['id']}'>&#x2713;</a>{$item['title']}</li>"; 
       }
   }
 
