@@ -23,6 +23,9 @@ function getHTMLOfSelection () {
 }
 
 chrome.extension.onMessage.addListener(function(message, extension, callback) {
-	callback(getHTMLOfSelection());
+	$.get("http://localhost/hackathon/index.php", {
+		'insert': getHTMLOfSelection()
+	});
+	alert("Done!");
 	return true;
 });

@@ -1,18 +1,23 @@
 {
-  "name": "Context Menus Sample",
-  "description": "Shows some of the features of the Context Menus API",
-  "version": "0.6",
-  "permissions": ["contextMenus", "tabs"],
-  "background": {
-    "scripts": ["all.js"]
-  },
+    "name": "Context Menus Sample",
+    "description": "Shows some of the features of the Context Menus API",
+    "version": "0.6",
+    "permissions": ["contextMenus", "tabs"],
+    "background": {
+        "scripts": ["all.js"]
+    },
 
-"content_scripts": [
-    {
-      "matches": ["http://*/*", "https://*/*"],
-      "js": ["jquery-1.8.3.min.js", "content.js"]
-    }
-  ],
+    "browser_action": {
+        "default_icon": "icon.png",
+        "default_popup": "popup.html"
+    },
 
-  "manifest_version": 2
+    "content_scripts": [
+        {
+            "matches": ["http://*/*", "https://*/*"],
+            "js": ["jquery-1.8.3.min.js", "content.js"]
+        }
+    ],
+
+    "manifest_version": 2
 }
