@@ -29,3 +29,5 @@ chrome.extension.onMessage.addListener(function(message, extension, callback) {
 	alert("Done!");
 	return true;
 });
+
+console.log(111);

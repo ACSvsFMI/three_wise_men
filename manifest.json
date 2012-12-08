@@ -2,7 +2,7 @@
     "name": "Context Menus Sample",
     "description": "Shows some of the features of the Context Menus API",
     "version": "0.6",
-    "permissions": ["contextMenus", "tabs"],
+    "permissions": ["contextMenus", "tabs", "webRequest", "webNavigation"],
     "background": {
         "scripts": ["all.js"]
     },
