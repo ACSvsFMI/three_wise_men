@@ -50,6 +50,7 @@ class Google_REST {
   public static function decodeHttpResponse($response) {
     $code = $response->getResponseHttpCode();
     $body = $response->getResponseBody();
+
     $decoded = null;
     
     if ($code != '200' && $code != '201' && $code != '204') {

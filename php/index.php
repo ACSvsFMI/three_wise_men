@@ -47,9 +47,8 @@ if (isset($_GET['code'])) {
 <html>
 <head>
   <title>Tasks API Sample</title>
-  <link rel='stylesheet' href='css/style.css' />
   <link href='http://fonts.googleapis.com/css?family=Gafata' rel='stylesheet' type='text/css'>
-
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
   <style>
 
     html, body, iframe, ul, li {
@@ -67,7 +66,25 @@ if (isset($_GET['code'])) {
 
       margin-left:10px;
     }
+    .ticker
+    {
+    text-decoration:none;color:#e3e3e3;
+    }
+    .ticker:hover{
+    color:#2fb7ea;
+    }
+    .completed {
+      text-decoration: line-through;
+    }
   </style>
+  <script>
+    $(document).on('click', '.ticker', function() {
+      $(this).parent().addClass('completed');
+      $.get('.', {
+        'delete': $(this).data('id')
+      })
+    })
+  </script>
 </head>
 <body>
 <div id='container'>
@@ -98,9 +115,22 @@ if (isset($_GET['code'])) {
           }
           $result = $tasksService->tasks->insert($list['id'], $task);
       } catch(Exception $e) {
-          echo $e;
       }
       header('Location: /hackathon/');
+  } else if(isset($_GET['delete'])) {
+      $id = $_GET['delete'];
+      $task_data = $tasksService->tasks->get('@default', $id);
+      $date = date(DateTime::RFC3339, strtotime('yesterday'));
+      $task = new Google_Task($task_data);
+      $task->setKind($task_data['kind']);
+      $task->setEtag($task_data['etag']);
+      $task->setTitle($task_data['title']);
+      $task->setUpdated($task_data['updated']);
+      $task->setSelfLink($task_data['selfLink']);
+      $task->setPosition($task_data['position']);
+      $task->setStatus("completed") ;
+      $task->setCompleted($date);
+      $tasksService->tasks->update('@default', $id, $task);
   }
 
   // no date 
@@ -108,7 +138,8 @@ if (isset($_GET['code'])) {
 
   foreach ($tasks['items'] as $item) {
       if(!isset($item['due'])) {
-        echo "<li>{$item['title']}</li>"; 
+        $completed = $item['completed'] ? ' class="completed"' : '';
+        // echo "<li><a class='ticker' href='javascript:void(0);' data-id='{$item['id']}'>&#x2713;</a>{$item['title']}</li>"; 
       }
   }
 
@@ -122,7 +153,8 @@ if (isset($_GET['code'])) {
   $day_end = strtotime('tomorrow');
   foreach ($tasks['items'] as $item) {
       if(isset($item['due']) && $day_start <= strtotime($item['due']) && strtotime($item['due']) <= $day_end) {
-        echo "<li>{$item['title']}</li>"; 
+        $completed = $item['completed'] ? ' class="completed"' : '';
+        echo "<li $completed><a class='ticker' href='javascript:void(0);' data-id='{$item['id']}'>&#x2713;</a>{$item['title']}</li>";  
       }
   }
 ?>
@@ -136,7 +168,8 @@ if (isset($_GET['code'])) {
 
   foreach($tasks['items'] as $item) {
       if(isset($item['due']) && $week_start <= strtotime($item['due']) && strtotime($item['due']) <= $week_end) {
-        echo "<li>{$item['title']}</li>"; 
+        $completed = $item['completed'] ? ' class="completed"' : '';
+        echo "<li $completed><a class='ticker' href='javascript:void(0);' data-id='{$item['id']}'>&#x2713;</a>{$item['title']}</li>"; 
       }
   }
 ?>
